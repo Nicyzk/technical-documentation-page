@@ -1,0 +1,204 @@
+*{
+    margin:0px;
+    padding:0px;
+    font-size:20px;
+}
+body{
+    background-color:rgb(221, 181, 128);
+}
+#navbar{
+    position: fixed; /*fixed means taken out of document flow and not affected by scrolling
+                       absolute means taken out of document flow and positioned relative to closest
+                       positioned parent and AFFECTED by scrolling*/
+    height:100%;
+    width:0px;
+    border-right: solid 1px lightslategray;
+    background-color: rgb(150, 61, 61);
+    color:rgb(252, 247, 247);
+    overflow-x:hidden;
+    z-index:3;
+    transition:width 0.5s;
+}
+
+#navhead{
+    text-align:center;
+    padding-top:60px;
+    font-size:25px;
+    font-weight: bold;
+    color:white;
+}
+
+#nav-list{
+    list-style: none;
+    margin-top:60px;
+}
+
+a{
+    text-decoration: none;
+}
+
+.nav-link{
+    color:white;
+}
+
+.nav-link li{
+    padding-left:35px;
+    height:50px;
+}
+
+.nav-link li:hover{
+    transform:scale(1.05);
+    background-color: rgb(161, 37, 37);
+}
+
+#main-doc{
+    width:70%;
+    margin:0px auto;
+   }
+
+.main-header{
+    text-align:center;
+    font-size:40px;
+    font-weight: 600;
+    padding-top:50px;
+}
+
+#quote{
+    margin:0px 60px 60px;
+}
+
+.page-header{
+    padding:50px;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.img{
+    max-width:100%;
+    margin:0px auto 60px;
+    display:block;
+}
+
+p{
+    margin:0px 60px 32px;
+}
+
+code{
+    margin: 0px 70px 32px;
+    background: lightsteelblue;
+    display:block; /*As it is an inline element code block does not accept bottom margins*/
+    white-space: no-wrap;
+    color:#be8d04;
+}
+
+/*white-space properties 
+Note: using <br> will cause text on the next line to have whitespace above it, showing a break.
+This is different from meaning of "text will wrap to the next line", in which there is no
+whitespace above it and the text seems to flow continuously to the next line.
+Properties of white-space:
+Normal(wrap): sequences of whitespace eg(enter/tab/space) will collapse into a SINGLE whitespace. 
+Text will wrap when necessary.
+nowrap: sequences of whitespace eg(enter/tab/space) will collapse into a SINGLE whitespace. 
+Text will never wrap to the next line until a <br> tag is met. Note that this changes the meaning of br tag
+as it now "wraps the text to the next line".
+pre: Whitespace is preserved(except enter/newline). Text will only wrap on line breaks(includes enter and<br>).
+pre-wrap: Whitespace is preserved. Text will wrap when necessary and on line breaks.
+
+
+Essentially 
+wrap means that text will wrap when necessary(and respects meaning of br)
+nowrap means text wil not wrap until br is met but for pre special case as it allows enter to wrap as well.
+pre means white-space preserved.
+
+*/
+
+#page-list{
+    list-style: none;
+    margin:0px 60px 32px;
+}
+
+.page-list-items{
+    white-space: pre-wrap;
+}
+/*Important!
+    p is a block level element
+    Things left:
+    1) Understand diff between inline,inline-block and block
+    An inline element has no line break before or after it and tolerates html elements next to it.
+    A block element has whitespace above and below it and does not tolerate html elements next to it. 
+    ie it occupies its own section of the page 
+    An inline block element (eg img) is tolerates html elements next to it as much as possible. However,
+    if there is not enough space for it, unlike inline element which will split itself(with some occupying
+    the space above and the remainder overflowing to the next line), inline block elements will behave like
+    a block element with the WHOLE ELEMENT overflowing to the next line.
+    2) figure out how to create a break for code block
+    RESOLVED ABOVE
+    */
+
+#navclose{
+        height:35px;
+        width:35px;
+        position:absolute;
+        margin-left:285px;
+        font-size:38px;
+        background-color:rgb(212, 18, 18);
+        color:white;
+        box-sizing:border-box;
+        line-height: 35px;
+        text-align: center;
+        cursor:pointer;
+    }
+
+    /*text is aligned vertically in the center of line height. Easiest way to set an element vertically
+    is to set line-height equal to height of parent.*/
+
+#burger-div{
+    margin-left:0px;
+    position:fixed;
+    background-color: rgb(109, 171, 252);
+    height:42px;
+    width:50px;
+    z-index: 1;
+    padding: 4px 0px;
+    cursor:pointer;
+}
+
+.burgerlines{
+    width: 35px;
+    height: 6px;
+    margin: 6px auto;
+    position:relative;
+    background-color: white;
+    z-index: 2;
+    border-radius:5px;
+}
+
+@media(max-width:320px){
+#main-doc{
+    width:100%;
+}
+.main-header{
+    padding-top:80px;
+}
+}
+/*  3) use js to animate nav bar
+finish burger and close icon. Make them clickable to expand and close navbar
+DONE main things used:
+a)addEventListener
+b)z-index
+c)overflow-x:hidden
+d)transition
+e)change margin of main-doc as well so it looks like it was pushed. Note that
+margin-left in css becomes marginLeft in js
+f)for icons that are click events use cursor:pointer; to CHANGE THE CLICK TO A POINTER!!!
+
+Next add links to all    
+done
+hover done                                                                                                                                                                                               
+
+4) media query 
+FORMAT
+@media(max-width 768px){
+
+}
+5) meet all requirements to pass */

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<head>
+    <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div id="burger-div">
+        <div class="burgerlines"></div>
+        <div class="burgerlines"></div>
+        <div class="burgerlines"></div>
+    </div>
+    <nav id="navbar">
+        <a id="navclose">&times;</a>
+        <a href="#"><header id="navhead">Regular Expressions</header></a>
+        <ul id="nav-list">
+            <a href="#Introduction" class="nav-link"><li>Introduction</li></a>
+            <a href="#Creating_a_regular_expression" class="nav-link"><li>Creating a regular expression</li></a>
+            <a href="#Testing_for_matches" class="nav-link"><li>Testing for matches</li></a>
+            <a href="#Sets_of_characters" class="nav-link"><li>Sets of characters</li></a>
+            <a href="#Repeating_parts_of_a_pattern" class="nav-link"><li>Repeating parts of a pattern</li></a>
+            <a href="#Grouping_subexpressions" class="nav-link"><li>Grouping subexpressions</li></a>
+            <a href="#Matches_and_groups" class="nav-link"><li>Matches and groups</li></a>
+        </ul>
+    </nav>
+    <main id="main-doc">
+        <div class="main-header">Regex in JavaScript</div>
+        <section class="main-section" id="Introduction">
+            <header class="page-header">
+            Introduction
+            </header>
+            <blockquote id="quote">Some people, when confronted with a problem, think ‘I know, I’ll use regular expressions.’ Now they have two problems.
+                        <br><br>Jamie Zawinski<br><br>
+                        Yuan-Ma said, ‘When you cut against the grain of the wood, much strength is needed. When you program against the grain of the problem, much code is needed.’
+            </blockquote>
+            <img class="img"src="https://drive.google.com/uc?id=1lIvBLDmHhL7XeMPLpgEaSoxwCQjEtvw-" alt="train">
+            <p>
+                Programming tools and techniques survive and spread in a chaotic, evolutionary way. It’s not always the pretty or brilliant ones that win but rather the ones that function well enough within the right niche or that happen to be integrated with another successful piece of technology.
+            </p>
+            <p>
+                In this chapter, I will discuss one such tool, regular expressions. Regular expressions are a way to describe patterns in string data. They form a small, separate language that is part of JavaScript and many other languages and systems.
+            </p>
+            <p>
+                Regular expressions are both terribly awkward and extremely useful. Their syntax is cryptic, and the programming interface JavaScript provides for them is clumsy. But they are a powerful tool for inspecting and processing strings. Properly understanding regular expressions will make you a more effective programmer.
+            </p>
+        </section>
+
+        <section class="main-section" id="Creating_a_regular_expression">
+            <header class="page-header">Creating a regular expression</header>
+            <p>
+                A regular expression is a type of object. It can be either constructed with the RegExp constructor or written as a literal value by enclosing a pattern in forward slash (/) characters.
+            </p>
+            <code>let re1 = new RegExp("abc");
+<br>let re2 = /abc/;</code>
+            <p>
+                Both of those regular expression objects represent the same pattern: an a character followed by a b followed by a c.
+            </p>
+            <p>
+                When using the RegExp constructor, the pattern is written as a normal string, so the usual rules apply for backslashes.
+            </p>
+            <p>
+                The second notation, where the pattern appears between slash characters, treats backslashes somewhat differently. First, since a forward slash ends the pattern, we need to put a backslash before any forward slash that we want to be part of the pattern. In addition, backslashes that aren’t part of special character codes (like \n) will be preserved, rather than ignored as they are in strings, and change the meaning of the pattern. Some characters, such as question marks and plus signs, have special meanings in regular expressions and must be preceded by a backslash if they are meant to represent the character itself.
+            </p>
+            <code>let eighteenPlus = /eighteen\+/;</code>
+        </section>
+        <section class="main-section" id="Testing_for_matches">
+            <header class="page-header">Testing for matches</header>
+            <p>
+                Regular expression objects have a number of methods. The simplest one is test. If you pass it a string, it will return a Boolean telling you whether the string contains a match of the pattern in the expression.
+            </p>
+            <code>
+                console.log(/abc/.test("abcde"));
+                <br>// → true
+                <br>console.log(/abc/.test("abxde"));
+                <br>// → false
+            </code>
+            <P>
+                A regular expression consisting of only nonspecial characters simply represents that sequence of characters. If abc occurs anywhere in the string we are testing against (not just at the start), test will return true.
+            </P>
+        </section>
+        <section class="main-section" id="Sets_of_characters">
+            <header class="page-header">Sets of characters</header>
+            <P>
+                Finding out whether a string contains abc could just as well be done with a call to indexOf. Regular expressions allow us to express more complicated patterns.
+            </P>
+            <P>
+                Say we want to match any number. In a regular expression, putting a set of characters between square brackets makes that part of the expression match any of the characters between the brackets.
+            </P>
+            <p>
+                Both of the following expressions match all strings that contain a digit:
+            </p>
+            <code>
+                console.log(/[0123456789]/.test("in 1992"));
+                <br>// → true
+                <br>console.log(/[0-9]/.test("in 1992"));
+                <br>// → true
+            </code>
+            <p>
+                Within square brackets, a hyphen (-) between two characters can be used to indicate a range of characters, where the ordering is determined by the character’s Unicode number. Characters 0 to 9 sit right next to each other in this ordering (codes 48 to 57), so [0-9] covers all of them and matches any digit.
+            </p>
+            <p>
+                A number of common character groups have their own built-in shortcuts. Digits are one of them: \d means the same thing as [0-9].
+            </p>
+            <ul id="page-list">
+                <li class="page-list-items">\d	Any digit character</li>
+                <br>
+                <li class="page-list-items">\w	An alphanumeric character (“word character”)</li>
+                <br>
+                <li class="page-list-items">\s	Any whitespace character (space, tab, newline, and similar)</li>
+                <br>
+                <li class="page-list-items">\D	A character that is not a digit</li>
+                <br>
+                <li class="page-list-items">\W	A nonalphanumeric character</li>
+                <br>
+                <li class="page-list-items">\S	A nonwhitespace character</li>
+                <br>
+                <li class="page-list-items">.	Any character except for newline</li>
+            </ul>
+            <p>
+                So you could match a date and time format like 01-30-2003 15:20 with the following expression:
+            </p>
+            <code>let dateTime = /\d\d-\d\d-\d\d\d\d \d\d:\d\d/;
+                <br>console.log(dateTime.test("01-30-2003 15:20"));
+                <br>// → true
+                <br>console.log(dateTime.test("30-jan-2003 15:20"));
+                <br>// → false
+            </code>
+            <p>
+                That looks completely awful, doesn’t it? Half of it is backslashes, producing a background noise that makes it hard to spot the actual pattern expressed. We’ll see a slightly improved version of this expression later.
+            </p>
+            <p>
+                These backslash codes can also be used inside square brackets. For example, [\d.] means any digit or a period character. But the period itself, between square brackets, loses its special meaning. The same goes for other special characters, such as +.
+            </p>
+            <p>
+                To invert a set of characters—that is, to express that you want to match any character except the ones in the set—you can write a caret (^) character after the opening bracket.
+            </p>
+            <code>
+                let notBinary = /[^01]/;
+                <br>console.log(notBinary.test("1100100010100110"));
+                <br>// → false
+                <br>console.log(notBinary.test("1100100010200110"));
+                <br>// → true
+            </code>
+        </section>
+        <section class="main-section" id="Repeating_parts_of_a_pattern">
+            <header class="page-header">Repeating parts of a pattern</header>
+            <p>
+                We now know how to match a single digit. What if we want to match a whole number—a sequence of one or more digits?
+            </p>
+            <p>
+                When you put a plus sign (+) after something in a regular expression, it indicates that the element may be repeated more than once. Thus, /\d+/ matches one or more digit characters.
+            </p>
+            <code>
+                console.log(/'\d+'/.test("'123'"));
+                <br>// → true
+                <br>console.log(/'\d+'/.test("''"));
+                <br>// → false
+                <br>console.log(/'\d*'/.test("'123'"));
+                <br>// → true
+                <br>console.log(/'\d*'/.test("''"));
+                <br>// → true
+            </code>
+            <p>
+                The star (*) has a similar meaning but also allows the pattern to match zero times. Something with a star after it never prevents a pattern from matching—it’ll just match zero instances if it can’t find any suitable text to match.
+            </p>
+            <p>
+                A question mark makes a part of a pattern optional, meaning it may occur zero times or one time. In the following example, the u character is allowed to occur, but the pattern also matches when it is missing.
+            </p>
+            <code>
+                let neighbor = /neighbou?r/;
+                <br>console.log(neighbor.test("neighbour"));
+                <br>// → true
+                <br>console.log(neighbor.test("neighbor"));
+                <br>// → true
+            </code>
+            <p>
+                To indicate that a pattern should occur a precise number of times, use braces. Putting {4} after an element, for example, requires it to occur exactly four times. It is also possible to specify a range this way: {2,4} means the element must occur at least twice and at most four times.
+            </p>
+            <p>
+                Here is another version of the date and time pattern that allows both single- and double-digit days, months, and hours. It is also slightly easier to decipher.
+            </p>
+            <code>
+                let dateTime = /\d{1,2}-\d{1,2}-\d{4} \d{1,2}:\d{2}/;
+                <br>console.log(dateTime.test("1-30-2003 8:45"));
+                <br>// → true
+            </code>
+            <p>
+                You can also specify open-ended ranges when using braces by omitting the number after the comma. So, {5,} means five or more times.
+            </p>
+        </section>
+        <section class="main-section" id="Grouping_subexpressions">
+            <header class="page-header">Grouping subexpressions</header>
+            <p>
+                To use an operator like * or + on more than one element at a time, you have to use parentheses. A part of a regular expression that is enclosed in parentheses counts as a single element as far as the operators following it are concerned.
+            </p>
+            <code>
+                let cartoonCrying = /boo+(hoo+)+/i;
+                <br>console.log(cartoonCrying.test("Boohoooohoohooo"));
+                <br>// → true
+            </code>
+            <p>
+                The first and second + characters apply only to the second o in boo and hoo, respectively. The third + applies to the whole group (hoo+), matching one or more sequences like that.
+            </p>
+            <p>
+                The i at the end of the expression in the example makes this regular expression case insensitive, allowing it to match the uppercase B in the input string, even though the pattern is itself all lowercase.
+            </p>
+        </section>
+        <section class="main-section" id="Matches_and_groups">
+            <header class="page-header">Matches and groups</header>
+            <p>
+                The test method is the absolute simplest way to match a regular expression. It tells you only whether it matched and nothing else. Regular expressions also have an exec (execute) method that will return null if no match was found and return an object with information about the match otherwise.
+            </p>
+            <code>
+                let match = /\d+/.exec("one two 100");
+                <br>console.log(match);
+                <br>// → ["100"]
+                <br>console.log(match.index);
+                <br>// → 8
+            </code>
+            <p>
+                An object returned from exec has an index property that tells us where in the string the successful match begins. Other than that, the object looks like (and in fact is) an array of strings, whose first element is the string that was matched. In the previous example, this is the sequence of digits that we were looking for.
+            </p>
+            <p>
+                String values have a match method that behaves similarly.
+            </p>
+            <code>
+                console.log("one two 100".match(/\d+/));
+                <br>// → ["100"]
+            </code>
+            <p>
+                When the regular expression contains subexpressions grouped with parentheses, the text that matched those groups will also show up in the array. The whole match is always the first element. The next element is the part matched by the first group (the one whose opening parenthesis comes first in the expression), then the second group, and so on.
+            </p>
+            <code>
+                let quotedText = /'([^']*)'/;
+                <br>console.log(quotedText.exec("she said 'hello'"));
+                <br>// → ["'hello'", "hello"]
+            </code>
+            <p>
+                When a group does not end up being matched at all (for example, when followed by a question mark), its position in the output array will hold undefined. Similarly, when a group is matched multiple times, only the last match ends up in the array.
+            </p>
+            <code>
+                console.log(/bad(ly)?/.exec("bad"));
+                <br>// → ["bad", undefined]
+                <br>console.log(/(\d)+/.exec("123"));
+                <br>// → ["123", "3"]
+            </code>
+            <p>
+                Groups can be useful for extracting parts of a string. If we don’t just want to verify whether a string contains a date but also extract it and construct an object that represents it, we can wrap parentheses around the digit patterns and directly pick the date out of the result of exec.
+            </p>
+            <p>
+                But first we’ll take a brief detour, in which we discuss the built-in way to represent date and time values in JavaScript.
+            </p>
+        </section>
+    </main>
+    <script type="text/javascript" src="script.js"></script>
+</body>
+</html>
